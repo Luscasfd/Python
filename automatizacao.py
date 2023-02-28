@@ -1,0 +1,28 @@
+import os
+import shutil
+
+# Limpa o diretório de downloads
+downloads_dir = os.path.join(os.path.expanduser('~'), 'Downloads')
+for file_name in os.listdir(downloads_dir):
+    file_path = os.path.join(downloads_dir, file_name)
+    try:
+        if os.path.isfile(file_path):
+            os.unlink(file_path)
+        elif os.path.isdir(file_path):
+            shutil.rmtree(file_path)
+    except Exception as e:
+        print(f"Erro ao excluir {file_path}. Erro: {e}")
+
+# Limpa a lixeira
+os.system("rd /s /q C:\\$Recycle.Bin")
+
+# Desinstala programas desnecessários
+os.system("powershell \"Get-AppxPackage *3DBuilder* | Remove-AppxPackage\"")
+os.system("powershell \"Get-AppxPackage *SkypeApp* | Remove-AppxPackage\"")
+os.system("powershell \"Get-AppxPackage *OneNote* | Remove-AppxPackage\"")
+
+# Desativa serviços desnecessários
+os.system("sc config DiagTrack start=disabled")
+os.system("sc stop DiagTrack")
+os.system("sc config wuauserv start=disabled")
+os.system("sc stop wuauserv")
